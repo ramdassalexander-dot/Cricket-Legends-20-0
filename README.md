@@ -1,4 +1,4 @@
-# Cricket Legends 20–0 — V13 National Legends League
+# Cricket Legends 20–0 — V14 Matchday Tactics / National Legends League
 
 Public game: https://cricket-legends-20-0.onrender.com
 
@@ -16,3 +16,6 @@ The default skill-first engine runs 21 fixed, shared scenarios for each fixture.
 Node.js 20+. Run `npm install`, `npm test`, then `npm start` and open http://localhost:3000.
 
 The app includes country rosters, sourced statistics where available, a broadcaster-style scoreboard, original music, full match scorecards, game achievements, a 200-coin reroll system, online matchmaking and server-verified 20-match season results. Advertising remains a demo until an actual ad network is approved and integrated.
+
+## V14 Matchday Tactics and model fairness
+The **SCOUT THE LEGENDS** panel lets players inspect all-time national squads and threat ratings. Before starting a ranked skill-first campaign, players can compare all 55 possible pairwise batting-position swaps against a chosen nation in BOTH fixtures (42 fixed trials) and apply one. Once a season starts, the XI is locked so server-verifiable ranked results remain fair. The pre-match **SCENARIO EDGE** uses the SAME 21 fixed conditions as the actual majority result; the earlier 41-trial forecast has been retired for ranked Legends seasons. These are game-mechanics scores, not real-world cricket probabilities.
