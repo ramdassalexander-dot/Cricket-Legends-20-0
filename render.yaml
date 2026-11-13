@@ -1,0 +1,14 @@
+# Test/preview launch: no payment required, but local leaderboard data may disappear
+# when the free service sleeps or redeploys. For durable rankings use render.paid.yaml
+# with a paid persistent disk, or migrate the leaderboard to a hosted database.
+services:
+  - type: web
+    name: cricket-legends-preview
+    runtime: node
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
