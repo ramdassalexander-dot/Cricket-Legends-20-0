@@ -1,7 +1,7 @@
 'use strict';
 // Cricket Legends V12 — competitive seasons with fixed matched scenarios.
 // Same XI and fixture yields the same 20 outcomes, eliminating retry-to-get-lucky rankings.
-const players=require('./player-data.json'),rosters=require('./era-rosters.json');
+const players=require('./player-data.json'),rosters=require('./era-rosters.json'),legends=require('./legends-xi.json');
 const byId=new Map(players.map(p=>[p.id,p]));
 const fixtureCountries=['India','Australia','England','Pakistan','West Indies','South Africa','New Zealand','Sri Lanka','Afghanistan','Bangladesh'];
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
@@ -58,10 +58,11 @@ function simInnings(batting,bowling,target=null,rng=Math.random){
  return {bat,bowl:bowl.map(x=>({id:x.id,name:x.name,balls:x.balls,r:x.runs,w:x.w,m:x.m})),total:score,wickets,balls,extras,fall,target,nb:0};
 }
 function randomOpp(country){
- const eras=rosters[country]||{},base=eras['2020']||eras['2010']||Object.values(eras).at(-1)||[];
- const order={O:0,B:1,W:2,A:3,P:4,S:4};
- return base.slice(0,11).map(id=>byId.get(id)).filter(Boolean).sort((a,b)=>(order[a.role]??4)-(order[b.role]??4));
+ const ids=legends[country];if(!Array.isArray(ids)||ids.length!==11)throw Error(`Missing Legends XI for ${country}`);
+ const xi=ids.map(id=>byId.get(id));if(xi.some(p=>!p||p.nation!==country))throw Error(`Invalid Legends XI for ${country}`);
+ return xi;
 }
+
 function trial(a,b,ix,k){
  const rng=fixedRng('CL2026|strategy|'+ix+'|'+k),firstSide=ix%2===0?'a':'b';
  const first=simInnings(firstSide==='a'?a:b,firstSide==='a'?b:a,null,rng);
@@ -84,6 +85,6 @@ function forecast(a,b,n=OUTLOOK_TRIALS){return verdict(a,b,0,Math.max(1,Math.min
 function validXI(ids){if(!Array.isArray(ids)||ids.length!==11||new Set(ids).size!==11)return null;const xs=ids.map(x=>byId.get(x));return xs.every(Boolean)?xs:null;}
 function season(ids){const us=validXI(ids);if(!us)throw Error('Invalid XI');let wins=0,losses=0,diff=0,runTotal=0;
  for(let i=0;i<20;i++){const op=randomOpp(fixtureCountries[i%10]);const m=simMatch(us,op,i);if(m.winner==='a')wins++;else losses++;diff+=m.aRuns-m.bRuns;runTotal+=m.aRuns;}
- return {wins,losses,diff,runTotal,mode:'skill-first'};
+ return {wins,losses,diff,runTotal,mode:'skill-first',oppositionVersion:OPPONENT_VERSION};
 }
-module.exports={byId,rosters,simMatch,simInnings,forecast,season,validXI,randomOpp,recordMetrics};
+module.exports={byId,rosters,simMatch,simInnings,forecast,season,validXI,randomOpp,recordMetrics,legends,OPPONENT_VERSION};
