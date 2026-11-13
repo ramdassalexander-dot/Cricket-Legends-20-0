@@ -44,9 +44,9 @@ const on=async(req,res)=>{
   const body=await parse(req);if(typeof body.ticket==='string')clients.delete(body.ticket);return json(res,200,{ok:true});
  }
  if(req.method!=='GET')return json(res,405,{error:'Method not allowed'});
- const allowed={'/':'index.html','/index.html':'index.html','/player-data.json':'player-data.json','/era-rosters.json':'era-rosters.json'};
+ const allowed={'/':'index.html','/index.html':'index.html','/player-data.json':'player-data.json','/era-rosters.json':'era-rosters.json','/assets/stadium-night.svg':'assets/stadium-night.svg'};
  const file=allowed[url.pathname];if(!file)return json(res,404,{error:'Not found'});
- const content=fs.readFileSync(path.join(__dirname,file));const type=file.endsWith('.html')?'text/html':'application/json';
+ const content=fs.readFileSync(path.join(__dirname,file));const type=file.endsWith('.html')?'text/html':file.endsWith('.svg')?'image/svg+xml':'application/json';
  res.writeHead(200,{'Content-Type':type+'; charset=utf-8','Content-Length':content.length,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});res.end(content);
  }catch(e){json(res,500,{error:e.message||'Internal error'});}
 };
