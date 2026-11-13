@@ -5,7 +5,8 @@
   "description": "Cricket Legends 20–0: all-time national Legends XIs and repeatable skill-first T20 challenge",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-v13.js"
+    "test": "node test-v13.js",
+    "postinstall": "npm test"
   },
   "engines": {
     "node": ">=20"
