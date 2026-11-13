@@ -16,6 +16,7 @@ function battingSkill(p){const q=recordMetrics(p);return clamp((q.bat-55)/75,-.1
 function bowlingSkill(p){const q=recordMetrics(p);return clamp((q.bowl-55)/150,-.15,.32);}
 function selectBowlers(xs){let ranked=xs.map((p,i)=>({p,i,s:recordMetrics(p).bowl+(p.role==='P'||p.role==='S'?35:p.role==='A'?22:0)}));ranked.sort((a,b)=>b.s-a.s);return ranked.slice(0,5).map(x=>x.p);}
 function fixedRng(text){let h=2166136261;for(let i=0;i<text.length;i++){h=Math.imul(h^text.charCodeAt(i),16777619)>>>0;}return function(){h=(h+0x6D2B79F5)>>>0;let t=h;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+const OPPONENT_VERSION='all-time-legends-v13';
 const FIXTURE_TRIALS=21, OUTLOOK_TRIALS=41;
 function simInnings(batting,bowling,target=null,rng=Math.random){
  const bat=batting.map(p=>({id:p.id,name:p.name,team:p.nation,r:0,b:0,fours:0,sixes:0,out:'did not bat',notOut:false}));
