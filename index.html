@@ -485,6 +485,149 @@ body[data-matchday="true"] .stadium-scene::before{background-position:center 60%
 .v11-ready-btn{width:100%;min-height:31px;padding:6px}
 @media(max-width:430px){.fit-rank{font-size:8px!important}.coin-pill{padding:4px;font-size:9px}.options-count.v11-options{gap:3px;font-size:9px}.fit-toggle{font-size:9px;min-width:51px;padding:3px}.tactical-item p{font-size:11px}.coin-mini{font-size:9px;padding:2px 5px}}
 @media(max-width:340px){.coin-pill{font-size:8px}.options-heading{gap:4px}.options-heading strong{font-size:10px}.fit-toggle{min-width:45px}.options-count.v11-options{font-size:8px}}
+
+/* V11.2 — Cricket broadcast graphics / responsive final scoreboard. */
+:root{--bg:#071a27;--panel:#102b3a;--lift:#193d50;--line:#436273;--lime:#e8bb69;--green:#75bec9;--white:#eff6f3;--mute:#a7c1c9;--gold:#ecc77e;--red:#db6e61}
+body{background:#051826!important}
+.top{background:#071e2eea!important;border-bottom:2px solid #d3b575!important;backdrop-filter:blur(8px)}
+.top .brand em{color:#eecb83!important}
+.top .logo{background:#bd4339!important;color:#fff6e6!important;border-radius:5px!important}
+.icon-btn{background:#102e40!important;border-color:#456579!important;color:#e5f5f7!important;border-radius:5px!important}
+.icon-btn:hover{background:#174157!important}
+.sup,.reel-label{color:#8ed2dc!important}
+.section-title span,.hi{color:#f4d190!important}
+.badge{background:#133747!important;border:1px solid #507787!important;color:#f1d58d!important;border-radius:3px!important}
+.pane,.ready-card,.season-block,.goal-card{background:linear-gradient(125deg,#0c2637eF,#0b1d30F3)!important;border:1px solid #527085a8!important;border-radius:8px!important;backdrop-filter:blur(5px)}
+.zone-heading,.squad-title,.options-heading{text-transform:uppercase;letter-spacing:.5px}
+.xi-zone,.options-zone{background:linear-gradient(145deg,#091f30ef,#0b2636ee)!important;border-color:#527483!important;border-radius:7px!important}
+.xi-mini,.xi-mini-tip,.tiny-player,.squad-slot,.athlete{background:#153246!important;border-color:#446174!important;border-radius:4px!important;box-shadow:none!important}
+.xi-mini.xi-filled{background:#1a4054!important;border-color:#c29c5b!important}
+.xi-mini-name{color:#f4f6ee!important}
+.zone-eyebrow,.options-count,.xi-filled .xi-num{color:#f2cd83!important}
+.xi-progress{background:#244355!important}.xi-progress i{background:#e7b865!important}
+.tiny-player:before{height:3px!important;background:#b28e58!important;opacity:1!important}
+.tiny-player:nth-child(4n+2):before,.tiny-player:nth-child(4n+3):before{background:#4da7ad!important}
+.tiny-player:nth-child(4n+2),.tiny-player:nth-child(4n+3){background:#173c4d!important;border-color:#527581!important}
+.tiny-card-head>span{color:#f3cd85!important}.tiny-card-head>small{background:#244d5b!important;border-color:#5a7d8b!important;color:#e9f5ee!important}
+.tiny-stats small{color:#9dc2c8!important}.tiny-stats b{color:#f4e3c1!important}
+.tiny-player-foot{border-top-color:#456775!important}.tiny-player-foot a{color:#8dd4da!important}
+.btn{border-radius:4px!important;box-shadow:none!important;text-shadow:none!important}
+.btn.main,.tiny-add,.tiny-player-foot .tiny-add{background:#be423b!important;color:#fff8ee!important;border:1px solid #e07864!important;box-shadow:none!important}
+.btn.alt{background:#17374b!important;color:#f1f5ee!important;border:1px solid #57778a!important}
+.btn.line{border-color:#6692a2!important;color:#a9dbe0!important}
+.compact-spin{background:#b03b36!important;color:#f8f2e8!important;border:1px solid #da8772!important;border-radius:5px!important}
+.compact-reel{background:#18394c!important;border-color:#597b88!important;border-radius:4px!important}
+.compact-reel button{color:#f4d18c!important}
+.mode.active,.mini,.fit-toggle{border-color:#967a4f!important;color:#dfefed!important;background:#1c4555!important;border-radius:3px!important}
+.fit-toggle[aria-pressed=true]{background:#245d6a!important;border-color:#9dc9c6!important}
+.fit-rank{color:#f1c47e!important}.fit-rank.medium{color:#93dbd7!important}
+.coin-mini,.coin-pill{border-radius:4px!important;background:#244354!important;color:#f2db9f!important}
+.coin-pill.action-coin{background:#d5ac64!important;color:#193040!important}
+.report-in-result,.fit-inline{border-radius:4px!important;background:#183b4b!important;color:#ecf1e9!important}
+.report-in-result button{border-radius:3px!important;background:#234e60!important;border-color:#8cb7ba!important}
+.modal{background:#0c2738f7!important;border-color:#b6a176!important;border-radius:9px!important}
+.score-innings,.score-table,.leaders-table{font-variant-numeric:tabular-nums}
+.score-innings{border-radius:5px!important;background:#102e40ee!important}
+.score-table th,.leaders-table th{background:#1d5260!important;color:#f4f4e9!important;letter-spacing:.6px}
+.score-table tbody tr:nth-child(even),.leaders-table tbody tr:nth-child(even){background:#173b4b88}
+.footer{color:#c4bf9c!important}
+/* Prioritize game results & controls above the honours sheet. Nothing is absolutely positioned. */
+#view:has(.broadcast-results){overflow:hidden;min-height:0;padding:7px 0 4px;gap:5px}
+#view:has(.broadcast-results) .headerline{flex:none;min-height:40px}
+.broadcast-results{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);gap:9px;flex:1;min-height:0;height:100%}
+.broadcast-finalbar,.broadcast-honours{min-width:0;min-height:0;border:1px solid #587784;border-radius:6px;overflow:hidden}
+.broadcast-finalbar{display:flex;flex-direction:column;gap:10px;padding:14px;background:#0b2838ed}
+.tv-overline{display:flex;align-items:center;justify-content:space-between;gap:6px;color:#e4cc9f;font-size:10px;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+.tv-overline .tv-live{background:#be443b;color:#fff;padding:4px 6px;border-radius:2px;letter-spacing:.6px}
+.tv-scoreline{display:grid;grid-template-columns:1fr 22px 1fr;align-items:stretch;background:#f3f2e9;color:#102a3a;border:1px solid #f9f9f1;min-height:125px;box-shadow:0 2px 0 #bd8b46}
+.tv-team-score{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 3px}
+.tv-team-score small{font-size:10px;font-weight:900;letter-spacing:1.5px;color:#56717b}
+.tv-team-score strong{font-size:clamp(58px,7vw,110px);font-weight:900;line-height:1;letter-spacing:-4px;font-variant-numeric:tabular-nums}
+.tv-team-score.win strong{color:#087e76}.tv-team-score.loss strong{color:#9a463c}
+.tv-score-divider{display:grid;place-items:center;color:#a2aeb0;font-weight:900;font-size:21px}
+.tv-outcome{border-left:4px solid #d0aa6c;background:#173e4c;color:#faf7e9;font-size:15px;font-weight:850;letter-spacing:.5px;padding:8px 11px}
+.tv-insight-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;background:#173d4c;border-left:3px solid #c8a46c;padding:7px 9px;min-height:36px}
+.tv-insight-row.scout{border-left-color:#77babd}
+.tv-insight-row span{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:#e3efed;font-weight:750;font-size:12px}
+.tv-insight-row button{border:1px solid #91b0ad;background:#244e5c;color:#fff9e9;font-weight:900;font-size:10px;letter-spacing:.3px;padding:8px 8px;border-radius:2px;cursor:pointer}
+.tv-primary-actions,.tv-secondary-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;min-height:37px}
+.tv-primary-actions{margin-top:auto}
+.tv-primary-actions .btn{min-width:0;font-size:11px!important;padding:8px 3px!important;min-height:38px;overflow:hidden;text-overflow:ellipsis}
+.broadcast-honours{display:flex;flex-direction:column;background:#f4f3ea!important;color:#0d2a36!important}
+.tv-panel-head{display:flex;align-items:center;justify-content:space-between;background:#133647;color:#f4f4e9;padding:11px 13px;min-height:43px;gap:8px}
+.tv-panel-head strong{font-size:13px;letter-spacing:1.5px;font-weight:900}
+.tv-panel-head button{background:#e7c67e;color:#153344;border:0;border-radius:2px;padding:6px 8px;font-size:10px;font-weight:900;white-space:nowrap}
+.tv-honours-body{flex:1;min-height:0;overflow:auto;padding:12px 13px;overscroll-behavior:contain;scrollbar-width:thin}
+.broadcast-honours .inline-leaders{display:grid;grid-template-columns:1fr 1fr;gap:11px;min-height:0}
+.broadcast-honours .inline-leaders>div{background:#fff!important;border:1px solid #c9d7d6!important;border-radius:2px!important;padding:9px 8px!important;overflow:hidden}
+.broadcast-honours .inline-leaders>div>span{display:block;background:#174a59;color:#fff!important;padding:6px 7px;margin:-9px -8px 7px!important;min-height:28px;font-size:10px!important;letter-spacing:.2px!important}
+.broadcast-honours .leader-line{border-bottom:1px solid #e4e9e5;padding:6px 1px!important;display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;font-variant-numeric:tabular-nums}
+.broadcast-honours .leader-line:last-child{border:0}
+.broadcast-honours .leader-line b{font-weight:750!important;color:#172f39!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px!important}
+.broadcast-honours .leader-line strong{color:#ac4a37!important;font-size:14px!important;flex:none}
+.tv-secondary-actions{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:auto;padding:10px 12px;background:#e8ede8;border-top:1px solid #c5d2d1}
+.tv-secondary-actions .btn{background:#18475b!important;color:#fff!important;border:1px solid #235a6b!important;padding:9px 3px!important;font-size:10px!important;min-height:34px}
+.tv-honours-note{background:#eaf1ed;color:#567477;font-size:10px;line-height:1.35;padding:9px;margin-top:10px;border-left:3px solid #d1af6b}
+/* TV broadcast strips rather than card-like neon roundels for other stages. */
+.season-main .record,.won{font-variant-numeric:tabular-nums;letter-spacing:-.065em!important}
+.season-main .season-block .sup,.squad-title strong{color:#e5cf9d!important}
+.season-list .fixture{background:#153e4c!important;border-bottom:1px solid #5c7e86!important;border-radius:0!important}
+.season-main .inline-leaders>div{background:#12384b!important;border-radius:3px!important;border-color:#4f7985!important}
+@media(max-width:740px){
+ .broadcast-results{display:flex;flex-direction:column;gap:7px}
+ .broadcast-finalbar{flex:none;gap:6px;padding:8px}
+ .tv-overline{font-size:9px;letter-spacing:.7px}
+ .tv-scoreline{min-height:66px;grid-template-columns:1fr 18px 1fr}
+ .tv-team-score{padding:4px 2px}.tv-team-score small{font-size:8px;letter-spacing:1px}
+ .tv-team-score strong{font-size:43px;letter-spacing:-2px}
+ .tv-score-divider{font-size:13px}
+ .tv-outcome{font-size:11px;padding:5px 9px;border-left-width:3px}
+ .tv-insight-row{min-height:31px;padding:3px 6px;gap:5px}
+ .tv-insight-row span{font-size:10px}
+ .tv-insight-row button{font-size:9px;padding:6px 5px}
+ .tv-primary-actions{min-height:34px;gap:5px}
+ .tv-primary-actions .btn{font-size:10px!important;min-height:34px;padding:6px 1px!important}
+ .broadcast-honours{flex:1;min-height:0}
+ .tv-panel-head{padding:6px 9px;min-height:34px}
+ .tv-panel-head strong{font-size:11px}.tv-panel-head button{padding:5px 6px;font-size:9px}
+ .tv-honours-body{padding:7px 8px}
+ .broadcast-honours .inline-leaders{gap:7px}
+ .broadcast-honours .inline-leaders>div{padding:6px!important}
+ .broadcast-honours .inline-leaders>div>span{margin:-6px -6px 5px!important;min-height:27px;padding:5px 5px;font-size:8px!important}
+ .broadcast-honours .leader-line{padding:5px 1px!important}
+ .broadcast-honours .leader-line b{font-size:10px!important}
+ .broadcast-honours .leader-line strong{font-size:12px!important}
+ .tv-secondary-actions{padding:7px 8px}.tv-secondary-actions .btn{min-height:30px;font-size:9px!important;padding:6px 3px!important}
+ .tv-honours-note{font-size:9px;padding:6px}
+}
+@media(max-height:625px) and (max-width:740px){
+ #view:has(.broadcast-results){padding-top:3px}
+ .tv-scoreline{min-height:54px}.tv-team-score strong{font-size:35px}.tv-outcome{font-size:10px;padding:3px 6px}
+ .broadcast-finalbar{gap:3px;padding:6px}
+ .tv-overline{font-size:8px}.tv-insight-row{min-height:27px;padding:2px 5px}.tv-insight-row button{padding:4px 5px;font-size:8px}.tv-insight-row span{font-size:9px}
+ .tv-primary-actions .btn{min-height:30px;font-size:9px!important;padding:4px 1px!important}
+ .tv-panel-head{min-height:30px}.tv-honours-body{padding:5px 6px}.tv-secondary-actions{padding:4px 6px}
+}
+@media(prefers-reduced-motion:reduce){.broadcast-results *{transition:none!important;animation:none!important}}
+
+
+/* TV-form-guide with real simulated scores, not decorative statistics. */
+.tv-form-title{display:flex;align-items:center;justify-content:space-between;margin:10px 0 5px;font-size:10px;font-weight:900;color:#244956;letter-spacing:.8px}
+.tv-form-title small{font-size:9px;color:#738c91;letter-spacing:0;font-weight:700}
+.tv-form-strip{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px}
+.tv-form-strip span{display:grid;place-items:center;aspect-ratio:1;max-height:23px;font-size:8px;font-weight:900;color:#fff}
+.tv-form-strip .w{background:#178477}.tv-form-strip .l{background:#af5347}
+.tv-match-list{display:grid;gap:0;border-top:2px solid #245064;border-bottom:1px solid #bed0cd}
+.tv-match-row{display:grid;grid-template-columns:31px minmax(0,1fr) auto 16px;align-items:center;gap:6px;width:100%;min-height:29px;border:0;border-bottom:1px solid #d9e3df;background:transparent;color:#153442;padding:5px 2px;text-align:left;font-size:10px;font-weight:750;cursor:pointer}
+.tv-match-row:nth-child(odd){background:#e7efed}
+.tv-match-row:hover{background:#d8e9e7}
+.tv-match-no{font-weight:900;color:#486d72}
+.tv-match-opponent{white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.tv-match-score{font-variant-numeric:tabular-nums;color:#385866;font-weight:800;white-space:nowrap}
+.tv-match-row strong{color:#fff;font-size:9px;text-align:center;border-radius:1px;padding:3px 2px}
+.tv-match-row strong.w{background:#178477}.tv-match-row strong.l{background:#ad4c43}
+@media(max-width:740px){.tv-form-title{font-size:9px;margin:8px 0 4px}.tv-form-strip{gap:1px}.tv-form-strip span{font-size:7px}.tv-match-row{font-size:9px;gap:4px;min-height:25px;grid-template-columns:26px minmax(0,1fr) auto 16px}}
+
 </style>
 <style>
 .v111-loss-overview{padding:11px 12px;margin:8px 0;border:1px solid #80536d;border-radius:12px;background:linear-gradient(130deg,#382440,#201a35)}
@@ -3349,6 +3492,30 @@ done=function(){
  return htmlResult;
 };
 // === END V11.1 ===
+
+
+// V11.2 — Final screen restructured to follow TV cricket broadcast hierarchy.
+// Controls stay inside the score panel; honours can scroll independently.
+done=function(){
+ const wins=state.results.filter(m=>m.win).length,loss=20-wins;
+ const earned=rewardForWins(wins),review=lossReviewV111();
+ const grade=wins===20?'PERFECT SEASON':wins>=16?'CHAMPIONSHIP FORM':wins>=10?'SEASON COMPLETE':'REBUILD THE XI';
+ const highlight=review.n?`${review.n} defeats · ${review.diagnostics[0]?.title||'Review scorecards'}`:'Unbeaten · no defeats to review';
+ const form=state.results.map((m,i)=>`<span title="Match ${i+1}: ${m.win?'win':'loss'}" class="${m.win?'w':'l'}">${m.win?'W':'L'}</span>`).join('');
+ const recent=state.results.slice(-5).reverse().map(m=>`<button class="tv-match-row" data-action="score" data-ix="${m.ix}" title="Open match ${m.ix+1} scorecard"><span class="tv-match-no">M${String(m.ix+1).padStart(2,'0')}</span><span class="tv-match-opponent">${html(m.opposition||'Opponent')}</span><span class="tv-match-score">${m.us}/${m.w1??'-'} – ${m.them}/${m.w2??'-'}</span><strong class="${m.win?'w':'l'}">${m.win?'W':'L'}</strong></button>`).join('');
+ return `${appHeader()}<div class="broadcast-results">
+ <section class="broadcast-finalbar" aria-label="Final season results and actions">
+ <div class="tv-overline"><span>CRICKET LEGENDS · SEASON REPORT</span><span class="tv-live">20 / 20 PLAYED</span></div>
+ <div class="tv-scoreline" aria-label="${wins} wins, ${loss} losses"><div class="tv-team-score win"><small>WINS</small><strong>${wins}</strong></div><span class="tv-score-divider">–</span><div class="tv-team-score loss"><small>LOSSES</small><strong>${loss}</strong></div></div>
+ <div class="tv-outcome">${grade}</div>
+ <div class="tv-insight-row"><span>🪙 +${earned} coins · ${wallet.coins} available</span><button data-action="coinWallet">REWARD TIERS ↗</button></div>
+ <div class="tv-insight-row scout"><span>${html(highlight)}</span><button data-action="tactical">${review.n?`REVIEW ${review.n} DEFEATS`:'TEAM REPORT'} ↗</button></div>
+ <div class="tv-primary-actions" role="group" aria-label="New game and online options"><button class="btn main" data-action="start">↻ NEW DRAFT</button><button class="btn alt" data-action="online">🌐 ONLINE</button><button class="btn alt" data-action="leaderboard">🏆 LOCAL</button></div>
+ </section>
+ <section class="broadcast-honours" aria-label="Season honours and statistics"><div class="tv-panel-head"><strong>SEASON HONOURS</strong><button data-action="history">ALL MATCHES ↗</button></div>
+ <div class="tv-honours-body">${seasonTop()}<div class="tv-form-title">20 MATCHES · FORM GUIDE</div><div class="tv-form-strip">${form}</div><div class="tv-form-title">RECENT SCORECARDS <small>tap a match to open</small></div><div class="tv-match-list">${recent}</div><div class="tv-honours-note">Simulated fantasy scorecards · Player career records are historical statistics. New seasons start with an empty XI.</div></div>
+ <div class="tv-secondary-actions"><button class="btn alt" data-action="stats">📊 ALL LEADERS</button><button class="btn alt" data-action="score" data-ix="19">LAST SCORECARD</button></div></section></div>`;
+};
 
 render();
 </script></body></html>
