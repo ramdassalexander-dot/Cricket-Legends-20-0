@@ -24,13 +24,13 @@ const on=async(req,res)=>{
  if(req.method==='OPTIONS'){json(res,200,{ok:true});return;}
  const url=new URL(req.url,'http://127.0.0.1');
  try{
- if(req.method==='GET'&&url.pathname==='/api/health')return json(res,200,{ok:true,players:engine.byId.size,queue:queue.length});
- if(req.method==='GET'&&url.pathname==='/api/leaderboard')return json(res,200,{entries:entries.slice(0,100).map(({name,wins,losses,diff,runTotal,at})=>({name,wins,losses,diff,runTotal,at}))});
+ if(req.method==='GET'&&url.pathname==='/api/health')return json(res,200,{ok:true,players:engine.byId.size,queue:queue.length,opposition:engine.OPPONENT_VERSION});
+ if(req.method==='GET'&&url.pathname==='/api/leaderboard')return json(res,200,{opposition:engine.OPPONENT_VERSION,entries:entries.filter(x=>x.oppositionVersion===engine.OPPONENT_VERSION).slice(0,100).map(({name,wins,losses,diff,runTotal,at})=>({name,wins,losses,diff,runTotal,at}))});
  if(req.method==='POST'&&url.pathname.startsWith('/api/')&&!attempts(req))return json(res,429,{error:'Too many requests; try again later.'});
  if(req.method==='POST'&&url.pathname==='/api/leaderboard'){
   const data=await parse(req);if(!engine.validXI(data.xi))return json(res,400,{error:'Eleven different registered player IDs are required.'});
   const result=engine.season(data.xi),item={name:safeName(data.name),...result,at:new Date().toISOString(),id:crypto.randomUUID(),signature:crypto.createHash('sha256').update(JSON.stringify(data.xi)).digest('hex').slice(0,16)};
-  entries.push(item);rank();return json(res,200,{attempt:item,rank:entries.findIndex(x=>x.id===item.id)+1});
+  entries.push(item);rank();return json(res,200,{attempt:item,rank:entries.filter(x=>x.oppositionVersion===engine.OPPONENT_VERSION).findIndex(x=>x.id===item.id)+1});
  }
  if(req.method==='POST'&&url.pathname==='/api/matchmaking/join'){
   const body=await parse(req);if(!engine.validXI(body.xi))return json(res,400,{error:'Draft eleven valid, different cricketers before matchmaking.'});
@@ -50,4 +50,4 @@ const on=async(req,res)=>{
  res.writeHead(200,{'Content-Type':type+'; charset=utf-8','Content-Length':content.length,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});res.end(content);
  }catch(e){json(res,500,{error:e.message||'Internal error'});}
 };
-http.createServer(on).listen(PORT,HOST,()=>console.log(`Cricket Legends V12 at http://localhost:${PORT} · online game server ready`));
+http.createServer(on).listen(PORT,HOST,()=>console.log(`Cricket Legends V13 at http://localhost:${PORT} · online game server ready`));
