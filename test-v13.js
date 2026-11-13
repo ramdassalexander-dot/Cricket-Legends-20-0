@@ -13,6 +13,11 @@ for(const country of countries){
 }
 const elite=['adam-gilchrist','sachin-tendulkar','virat-kohli','viv-richards','brian-lara','jacques-kallis','wasim-akram','malcolm-marshall','shane-warne','glenn-mcgrath','rashid-khan'];
 const weak=e.rosters.Afghanistan['2020'].slice(0,11);
+// Regression guard: a perfect 20–0 season must be achievable by selection, not lucky rerolls.
+const perfect=['don-bradman','kumar-sangakkara','ms-dhoni','matthew-hayden','brian-lara','ab-de-villiers','rashid-khan','malcolm-marshall','curtly-ambrose','shakib-al-hasan','lasith-malinga'];
+const perfectSeason=e.season(perfect);
+assert.equal(perfectSeason.wins,20,'An optimally constructed XI must be able to achieve 20–0');
+assert.deepEqual(perfectSeason,e.season(perfect),'Perfect XI must be repeatable without random retries');
 const first=e.season(elite),replay=e.season(elite),other=e.season(weak);
 assert.deepEqual(first,replay);assert.ok(first.wins>other.wins);
 assert.equal(first.oppositionVersion,e.OPPONENT_VERSION);
