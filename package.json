@@ -1,6 +1,6 @@
 {
   "name": "cricket-legends-20-0",
-  "version": "9.0.0",
+  "version": "11.0.0",
   "private": true,
   "description": "Cricket XI draft game with probabilistic T20 simulator and online-ready leaderboard / matchmaking",
   "scripts": {
