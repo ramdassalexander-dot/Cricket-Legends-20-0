@@ -1,4 +1,4 @@
-# Cricket Legends 20–0 · V21 Dual-Skill Legends Cup
+# Cricket Legends 20–0 · V21.1 Anti-Streak Draft
 
 **Live game:** https://cricket-legends-20-0.onrender.com
 
@@ -46,3 +46,6 @@ npm start
 - Friend duels are an **asynchronous server-scored challenge**, not real-time ball-by-ball multiplayer.
 - You must connect `DATABASE_URL` to get durable public rankings and invites. Test status via `/api/health`.
 - Advertising is a demo; there are no real paid transactions or ad network integrations.
+
+## V21.1 — Fixing frustrating repeat country rolls
+Previously all 45 available country–era combinations were selected uniformly independently for every spin: Bangladesh occupied 3 combinations (6.7%) and Afghanistan 2 (4.4%), with no memory of prior results. Consecutive repeats could occur by chance. The anti-streak spinner now excludes the last four drawn countries whenever another eligible country is available, and applies a 0.30 repeat multiplier to nations already seen during the draft. This is not a guaranteed one-of-each-country selection: smaller era pools remain less common and the game stays randomized. Free country rerolls keep the existing decade; era rerolls keep the existing country; 200-coin full respins use the same fair rolling policy. State is saved with the current draft; historical completed seasons and match odds are unchanged.
