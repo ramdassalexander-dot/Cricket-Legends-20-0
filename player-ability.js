@@ -5,7 +5,7 @@
  * This exact module is embedded into standalone HTML and required by the server.
  */
 const CricketAbilityV15=(()=>{
- const VERSION='all-time-legends-v15-ability';
+ const VERSION='all-time-legends-v20-captaincy';
  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
  const round=n=>Math.round(clamp(n,25,99));
  const terrain=['balanced','seam','turn','flat','seam','balanced','flat','turn','balanced','turn'];
@@ -120,7 +120,7 @@ const CricketAbilityV15=(()=>{
   return selected;
  }
  function phaseFor(over){return over<6?'powerplay':over>=16?'death':'middle';}
- function pickBowler(bowlers,bowlingFigures,over,previous,surface){
+ function pickBowler(bowlers,bowlingFigures,over,previous,surface,plan={}){
   const phase=phaseFor(over),remaining=20-over;
   const available=bowlers.map((x,i)=>({x,i,used:bowlingFigures[i].balls/6})).filter(x=>x.used<4&&x.i!==previous);
   const eligible=available.length?available:bowlers.map((x,i)=>({x,i,used:bowlingFigures[i].balls/6})).filter(x=>x.used<4);
@@ -129,7 +129,9 @@ const CricketAbilityV15=(()=>{
    function score(q){const m=q.x.a.bowl,climate=surface==='turn'&&q.x.a.kind==='spin'?6:surface==='seam'&&q.x.a.kind==='pace'?6:0;
     // Reserve specialists for key phases, but ensure all overs can be completed.
     const reserved=phase!=='death'&&m.death>85?Math.max(0,m.death-85)*.60:0;
-    return m[phase]*.74+m.control*.16+m.strike*.10+climate-reserved-q.used*3.2;
+    const directive=plan.bowling==='attack'?m.strike*.17-m.control*.08:plan.bowling==='contain'?m.control*.20-m.strike*.09:0;
+    const focus=plan.focus==='spin'&&q.x.a.kind==='spin'?9:plan.focus==='pace'&&q.x.a.kind==='pace'?9:0;
+    return m[phase]*.74+m.control*.16+m.strike*.10+climate-reserved-q.used*3.2+directive+focus;
    }
    return score(b)-score(a)||a.x.i-b.x.i;
   });
@@ -143,7 +145,7 @@ const CricketAbilityV15=(()=>{
   let striker=0,nonStriker=1,next=2,score=0,wickets=0,balls=0,extras=0,last=-1,done=false;
   const fall=[];bats[0].out='not out';bats[1].out='not out';
   for(let over=0;over<20&&!done;over++){
-   const bi=pickBowler(selected,figures,over,last,surface);last=bi;
+   const bi=pickBowler(selected,figures,over,last,surface,ctx.plan||{});last=bi;
    const bow=selected[bi],bowlProfile=bow.a.bowl,phase=phaseFor(over),fig=figures[bi],runsBefore=fig.r,ballsBefore=fig.balls;
    for(let j=0;j<6;j++){
     if(wickets>=10||(target!=null&&score>=target)){done=true;break;}
@@ -152,7 +154,8 @@ const CricketAbilityV15=(()=>{
     const bowlingAbility=bowlProfile[phase]*.51+bowlProfile.control*.24+bowlProfile.strike*.25;
     const pitch=(surface==='turn'&&bow.a.kind==='spin'?5:surface==='seam'&&bow.a.kind==='pace'?5:surface==='flat'?-4:0);
     const chaseRequired=target==null?0:(target-score)*6/Math.max(1,120-balls);
-    const intended=clamp((phase==='powerplay'?.06:phase==='death'?.17:.025)+Math.max(-.06,(chaseRequired-8)*.024)+((apt.aggression-60)*.0021)-(wickets>=6?.10:0),-.14,.32);
+    const captainRisk=ctx.plan?.batting==='attack'?.105:ctx.plan?.batting==='anchor'?-.075:0;
+    const intended=clamp(captainRisk+(phase==='powerplay'?.06:phase==='death'?.17:.025)+Math.max(-.06,(chaseRequired-8)*.024)+((apt.aggression-60)*.0021)-(wickets>=6?.10:0),-.14,.32);
     const wicket=clamp(.050+(bowlingAbility+pitch-battingAbility)*.00065+(bowlProfile.strike-62)*.00024+(60-apt.survival)*.00025+intended*.043+(wickets>=8?.010:0),.011,.147);
     fig.balls++;balls++;b.b++;
     const die=rng();
@@ -181,7 +184,7 @@ const CricketAbilityV15=(()=>{
    if(fig.r===runsBefore&&fig.balls-ballsBefore===6)fig.m++;
    if(!done)[striker,nonStriker]=[nonStriker,striker];
   }
-  return {bat:bats,bowl:figures,total:score,wickets,balls,extras,fall,target,nb:0,surface};
+  return {bat:bats,bowl:figures,total:score,wickets,balls,extras,fall,target,nb:0,surface,plan:ctx.plan||{}};
  }
  return Object.freeze({VERSION,context,profile,selectBowlers,simulateInnings,phaseFor});
 })();
