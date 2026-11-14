@@ -32,9 +32,3 @@ const CricketDraftRoller=(()=>{
   return Object.freeze({COOLDOWN,REPEAT_WEIGHT,remember,pick});
 })();
 if(typeof module!=='undefined'&&module.exports)module.exports=CricketDraftRoller;
-function applyCountryDraw(pick,rememberCountry=true){
- const order=[...ERA_ROSTERS[pick.country][String(pick.era)]];
- for(let i=order.length-1;i>0;i--){const j=rnd(0,i);[order[i],order[j]]=[order[j],order[i]];}
- state.draw={...pick,order};state.page=0;
- if(rememberCountry)state.spinHistory=CricketDraftRoller.remember(state.spinHistory,pick.country);
-}
