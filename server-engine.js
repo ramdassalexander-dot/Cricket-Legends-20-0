@@ -44,4 +44,4 @@ function season(ids,plan={}){const us=validXI(ids);if(!us)throw Error('Invalid X
  for(let i=0;i<20;i++){const op=randomOpp(fixtureCountries[i%10]);const m=simMatch(us,op,i,plan);if(m.winner==='a')wins++;else losses++;diff+=m.aRuns-m.bRuns;runTotal+=m.aRuns;}
  return {wins,losses,diff,runTotal,mode:'skill-first',oppositionVersion:OPPONENT_VERSION,cleanPlan};
 }
-module.exports={byId,rosters,simMatch,simInnings,forecast,season,validXI,randomOpp,recordMetrics,legends,OPPONENT_VERSION};
+module.exports={byId,rosters,simMatch,simInnings,forecast,season,validXI,randomOpp,recordMetrics,legends,OPPONENT_VERSION,cleanPlan};
