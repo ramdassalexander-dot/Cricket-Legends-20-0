@@ -42,6 +42,6 @@ function forecast(a,b,n=OUTLOOK_TRIALS){return verdict(a,b,0,Math.max(1,Math.min
 function validXI(ids){if(!Array.isArray(ids)||ids.length!==11||new Set(ids).size!==11)return null;const xs=ids.map(x=>byId.get(x));return xs.every(Boolean)?xs:null;}
 function season(ids,plan={}){const us=validXI(ids);if(!us)throw Error('Invalid XI');let wins=0,losses=0,diff=0,runTotal=0;
  for(let i=0;i<20;i++){const op=randomOpp(fixtureCountries[i%10]);const m=simMatch(us,op,i,plan);if(m.winner==='a')wins++;else losses++;diff+=m.aRuns-m.bRuns;runTotal+=m.aRuns;}
- return {wins,losses,diff,runTotal,mode:'skill-first',oppositionVersion:OPPONENT_VERSION,cleanPlan};
+ return {wins,losses,diff,runTotal,mode:'skill-first',oppositionVersion:OPPONENT_VERSION};
 }
 module.exports={byId,rosters,simMatch,simInnings,forecast,season,validXI,randomOpp,recordMetrics,legends,OPPONENT_VERSION,cleanPlan};
