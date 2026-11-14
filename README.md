@@ -1,4 +1,4 @@
-# Cricket Legends 20–0 — V14 Matchday Tactics / National Legends League
+# Cricket Legends 20–0 — V15 Individual Player Abilities / National Legends League
 
 Public game: https://cricket-legends-20-0.onrender.com
 
@@ -19,3 +19,6 @@ The app includes country rosters, sourced statistics where available, a broadcas
 
 ## V14 Matchday Tactics and model fairness
 The **SCOUT THE LEGENDS** panel lets players inspect all-time national squads and threat ratings. Before starting a ranked skill-first campaign, players can compare all 55 possible pairwise batting-position swaps against a chosen nation in BOTH fixtures (42 fixed trials) and apply one. Once a season starts, the XI is locked so server-verifiable ranked results remain fair. The pre-match **SCENARIO EDGE** uses the SAME 21 fixed conditions as the actual majority result; the earlier 41-trial forecast has been retired for ranked Legends seasons. These are game-mechanics scores, not real-world cricket probabilities.
+
+## V15 player abilities
+The game now uses **one shared `player-ability.js` module**, embedded verbatim in offline HTML and required by the Node server. Every player's powerplay/middle/death batting, aggression, survival, pace/spin matchups, bowling control and strike threat directly affect ball-by-ball outcomes. Pitches change pace/spin effectiveness. Ratings are transparent, unverified fantasy estimates from mixed-era career snapshots, role baselines and limited curated playing-style traits—not official T20 splits. Same 21 fixed match scenarios drive the forecast and winner. New V15 drafts have separate leaderboards; in-progress older seasons retain their model.

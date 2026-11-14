@@ -50,4 +50,4 @@ const on=async(req,res)=>{
  res.writeHead(200,{'Content-Type':type+'; charset=utf-8','Content-Length':content.length,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'});res.end(content);
  }catch(e){json(res,500,{error:e.message||'Internal error'});}
 };
-http.createServer(on).listen(PORT,HOST,()=>console.log(`Cricket Legends V14 at http://localhost:${PORT} · online game server ready`));
+http.createServer(on).listen(PORT,HOST,()=>console.log(`Cricket Legends V15 at http://localhost:${PORT} · online game server ready`));

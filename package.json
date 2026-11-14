@@ -1,11 +1,11 @@
 {
   "name": "cricket-legends-20-0",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "private": true,
-  "description": "Cricket Legends 20–0: all-time national Legends XIs, skill-first seasons and 21-scenario tactical laboratory",
+  "description": "Cricket Legends 20–0: phase-specific individual abilities, pitch and tactical matchups",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-v13.js",
+    "test": "node test-v13.js && node test-v15.js",
     "postinstall": "npm test"
   },
   "engines": {
