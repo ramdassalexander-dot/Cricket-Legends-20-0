@@ -1,14 +1,18 @@
 {
   "name": "cricket-legends-20-0",
-  "version": "20.0.0",
+  "version": "21.0.0",
   "private": true,
-  "description": "Cricket Legends 20–0: phase-specific individual abilities, pitch and tactical matchups",
+  "description": "Cricket Legends v21: evidence-first dual-skill ratings, verified daily fantasy challenge, friend duels, and optional PostgreSQL rankings",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-v13.js && node test-v15.js && node test-v20.js",
-    "postinstall": "npm test"
+    "test": "node test-v15.js && node test-v20.js && node test-v21.js",
+    "postinstall": "npm test",
+    "balance": "node balance-test.js"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
   }
 }
