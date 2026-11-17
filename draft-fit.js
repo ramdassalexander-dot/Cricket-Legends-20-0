@@ -22,7 +22,7 @@ const CricketDraftFitV22=(()=>{
   if(replacesBowler)reason=bowls.length<5?'Adds an effective frontline bowling option':'Improves the existing top-five bowling attack';
   if(!enoughBatters&&a.bat.overall>=77){points+=4;reason='Adds a proven top-six batting option';}
   if(availableOpeners<2&&a.bat.powerplay>=80){points+=3;reason='Improves powerplay batting';}
-  if(!selected.some(p=>p.role==='W')&&player.role==='W'){points+=9;reason='Fills the wicketkeeper position';}
+  if(!selected.some(p=>p.role==='W')&&player.role==='W'&&selected.length>=7){const keeperNeed=Math.min(9,(selected.length-6)*3);points+=keeperNeed;reason='Fills the wicketkeeper position when your XI needs one';}
   if(!replacesBowler&&a.bowl.overall>=62&&bowls.length>=5&&a.bat.overall<69){reason='Additional bowler does not improve your current best five';}
   if(!Number.isFinite(player.avg)&&!Number.isFinite(player.ba)&&!a.record.verified){
    reason=reason==='Batting contribution to your XI'?'Limited published statistics; conservative ability estimate':reason;
