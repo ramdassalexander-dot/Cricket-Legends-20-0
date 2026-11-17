@@ -66,3 +66,9 @@ batter or bowler. No fixed all-rounder cap is used.
 **Outstanding:** The complete 793-person record audit and format-matched
 Statsguru / other licensed career statistics import is not yet complete.
 Older players need evidenced Test/ODI translations, not fake T20I figures.
+
+## V23 — ESPNcricinfo Statsguru links and reviewed-stat imports (17 November 2026)
+
+Every player card now offers ESPNcricinfo lookup. Three identities are directly matched with Statsguru IDs: Virat Kohli (253802), Jasprit Bumrah (625383) and Shakib Al Hasan (56143). Others show a **search link, not a verified identity match**. The original career-figure source link remains visible separately, to avoid falsely claiming existing data is from ESPNcricinfo.
+
+The batting/bowling game engine can consume independently reviewed ESPNcricinfo career records for T20I, T20, ODI and Test cricket. When imported, T20I is preferred for this T20 simulation; other formats are cross-format fantasy estimates. Records carry a source URL and an as-of date, and role is never an automatic all-rounder bonus. Use `npm run import:cricinfo -- path/to/reviewed-stats.json` with the normalized JSON documented in `cricinfo-import.js`; run `npm test` then commit the resulting `index.html` and `player-data.json` files. The importer checks IDs and statistic ranges and refuses duplicates. A full Statsguru audit of 793 players remains undone; there is **no live ESPNcricinfo subscription or bulk licence configured**.
