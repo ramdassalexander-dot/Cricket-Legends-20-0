@@ -5,10 +5,12 @@
   "description": "Cricket Legends V23: ESPNcricinfo reviewed-stat import and role-neutral ratings with marginal five-bowler fit",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-v15.js && node test-v20.js && node test-v21.js && node test-draft-randomizer.js && node test-v22.js && node test-v23.js",
+    "test": "node test-v15.js && node test-v20.js && node test-v21.js && node test-draft-randomizer.js && node test-v22.js && node test-v23.js && node test-cricinfo-connect.js",
     "postinstall": "npm test",
     "balance": "node balance-test.js",
-    "import:cricinfo": "node cricinfo-import.js"
+    "import:cricinfo": "node cricinfo-import.js",
+    "sync:cricinfo": "node cricinfo-connect.js",
+    "link:cricinfo": "node cricinfo-connect.js --identities"
   },
   "engines": {
     "node": ">=20"
