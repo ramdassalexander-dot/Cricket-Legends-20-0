@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const players=require('./player-data.json'),ability=require('./player-ability'),fit=require('./draft-fit');
 const byId=new Map(players.map(x=>[x.id,x]));
 const p=id=>{const x=byId.get(id);assert.ok(x,id);return x;};
-assert.equal(ability.VERSION,'all-time-legends-v22-marginal-fit');
+assert.equal(ability.VERSION,'all-time-legends-v23-cricinfo-import');
 assert.ok(fs.readFileSync('index.html','utf8').includes(fs.readFileSync('player-ability.js','utf8').trim()));
 assert.ok(fs.readFileSync('index.html','utf8').includes(fs.readFileSync('draft-fit.js','utf8').trim()));
 assert.ok(fs.readFileSync('index.html','utf8').includes('CricketDraftFitV22.rate(v15Player(p)'));
