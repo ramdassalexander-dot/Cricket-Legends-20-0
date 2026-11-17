@@ -33,3 +33,7 @@ complete data import and identity/format reconciliation is still needed.
 No player should be treated as elite by default because they have the
 `A`/all-rounder designation. Unknown performance data are marked as missing
 and receive conservative, clearly described baseline estimates.
+
+## V23 — ESPNcricinfo is a reference, not an invented source
+
+The player cards keep the actual RECORD SOURCE beside the ESPN STATS or FIND ON ESPN reference link. Only rows imported from independently reviewed Statsguru figures through `cricinfo-import.js` are labelled as ESPNcricinfo data. ESPN IDs 253802, 625383 and 56143 have been identity-matched to Kohli, Bumrah and Shakib respectively; all other lookup links are search pages. No live API or complete licensed dataset is connected. Historical career data remains format-labelled and fantasy phase ratings remain estimates.
