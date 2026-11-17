@@ -4478,7 +4478,7 @@ const CricketDraftFitV22=(()=>{
   if(replacesBowler)reason=bowls.length<5?'Adds an effective frontline bowling option':'Improves the existing top-five bowling attack';
   if(!enoughBatters&&a.bat.overall>=77){points+=4;reason='Adds a proven top-six batting option';}
   if(availableOpeners<2&&a.bat.powerplay>=80){points+=3;reason='Improves powerplay batting';}
-  if(!selected.some(p=>p.role==='W')&&player.role==='W'){points+=9;reason='Fills the wicketkeeper position';}
+  if(!selected.some(p=>p.role==='W')&&player.role==='W'&&selected.length>=7){const keeperNeed=Math.min(9,(selected.length-6)*3);points+=keeperNeed;reason='Fills the wicketkeeper position when your XI needs one';}
   if(!replacesBowler&&a.bowl.overall>=62&&bowls.length>=5&&a.bat.overall<69){reason='Additional bowler does not improve your current best five';}
   if(!Number.isFinite(player.avg)&&!Number.isFinite(player.ba)&&!a.record.verified){
    reason=reason==='Batting contribution to your XI'?'Limited published statistics; conservative ability estimate':reason;
@@ -4519,7 +4519,7 @@ showPlayerAbilityV15=function(id){v21PrevPlayerScout(id);const p=BY_ID[id];if(!p
  const node=overlay.querySelector('.abv15-scroll');if(!node||!record)return;
  const avg=record.average==null?'—':record.average.toFixed(2),sr=record.strikeRate==null?'—':record.strikeRate.toFixed(1),bAvg=record.bowlingAverage==null?'—':record.bowlingAverage.toFixed(2),eco=record.economy==null?'—':record.economy.toFixed(2);
  const url=record.source&&/^https:\/\//.test(record.source)?record.source:null;
- node.insertAdjacentHTML('beforeend',`<section class="v21-proof"><strong>${record.verified?'✓ CHECKED HISTORICAL T20I RECORD':'ℹ HISTORICAL SOURCE / DATA QUALITY'}</strong><p>${html(record.format)} · Bat avg <b>${avg}</b> · Strike rate <b>${sr}</b> · Bowl avg <b>${bAvg}</b> · Economy <b>${eco}</b></p>${url?`<a target="_blank" rel="noopener noreferrer" href="${html(url)}">VIEW SOURCE ↗</a>`:'<small>Only estimated attributes are available.</small>'}<small> Phase-specific ratings and fantasy translations remain estimates. Overall batting and bowling receive independent evidence-based weight; neither is discounted for being an all-rounder.</small></section>`);
+ node.insertAdjacentHTML('beforeend',`<section class="v21-proof"><strong>${record.provider==='ESPNcricinfo Statsguru'?'✓ ESPNCRICINFO '+html(record.format)+' CAREER SUMMARY':record.verified?'✓ CHECKED HISTORICAL T20I RECORD':'ℹ HISTORICAL SOURCE / DATA QUALITY'}</strong><p>${html(record.format)} · Bat avg <b>${avg}</b> · Strike rate <b>${sr}</b> · Bowl avg <b>${bAvg}</b> · Economy <b>${eco}</b></p>${url?`<a target="_blank" rel="noopener noreferrer" href="${html(url)}">VIEW SOURCE ↗</a>`:'<small>Only estimated attributes are available.</small>'}<small> Phase-specific ratings and fantasy translations remain estimates. Overall batting and bowling receive independent evidence-based weight; neither is discounted for being an all-rounder.</small></section>`);
 };
 const v21PrevReady=ready;
 ready=function(){let h=v21PrevReady();if(state.oppositionVersion!==V21_MODE)return h;
