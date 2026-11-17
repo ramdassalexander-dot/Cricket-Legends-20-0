@@ -28,14 +28,15 @@ function normalize(input,players){
   const espnId=String(line.espnId||'');
   if(!/^\d{2,9}$/.test(espnId))throw Error('Invalid ESPNcricinfo numeric player ID for '+line.gameId);
   const allowed=String(knownIds[line.gameId]||player.cricinfo?.id||'');
-  if(allowed&&espnId!==allowed)throw Error('ID mismatch for '+line.gameId+' — manual verification required');
+  if(!allowed)throw Error('Unreviewed ESPN identity for '+line.gameId+' — add a manually checked ID to cricinfo-id-map.json first');
+  if(espnId!==allowed)throw Error('ID mismatch for '+line.gameId+' — manual verification required');
   if(!formats.has(line.format))throw Error('Unknown format for '+line.gameId);
   const key=line.gameId+':'+line.format;if(seen.has(key))throw Error('Duplicate '+key);seen.add(key);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(line.asOf||''))throw Error('Missing YYYY-MM-DD asOf for '+key);
   const row={m:numeric(line.m,1,6000),runs:numeric(line.runs,0,100000),
    avg:numeric(line.avg,0,200),sr:numeric(line.sr,0,500),wk:numeric(line.wk,0,10000),
    ba:numeric(line.ba,0,200),eco:numeric(line.eco,0,25)};
-  if(!Object.values(row).some(n=>n!==null&&n!==row.m))throw Error('No performance statistics for '+key);
+  if(![row.avg,row.sr,row.ba,row.eco].some(n=>n!==null)&&!(row.runs>0)&&!(row.wk>0))throw Error('No performance statistics for '+key);
   out.push({player,espnId,format:line.format,row,asOf:line.asOf});
  }
  return out;
