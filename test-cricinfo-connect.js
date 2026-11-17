@@ -1,0 +1,12 @@
+'use strict';
+const a=require('node:assert/strict'),s=require('./cricinfo-connect');
+const people=s.csv('identifier,name,unique_name,key_cricinfo\nx,V Kohli,V Kohli,253802\ny,Shakib Al Hasan,Shakib Al Hasan,56143\nz,J Smith,J Smith,111\nq,J Smith,J Smith,222\n');
+const names=s.csv('identifier,name\nx,Virat Kohli\n');
+const found=s.link([{id:'virat',name:'Virat Kohli'},{id:'shakib',name:'Shakib Al Hasan'},{id:'smith',name:'John Smith'}],people,names);
+a.equal(found.linked.get('virat'),'253802');a.equal(found.linked.get('shakib'),'56143');
+a.equal(found.linked.has('smith'),false);
+a.equal(s.norm('Virát Kohli'), 'virat kohli');
+a.deepEqual(s.summary({data:{overall:{matches:125,runs:4188,average:48.7,strike_rate:137}}},'batting'),{m:125,runs:4188,avg:48.7,sr:137});
+a.deepEqual(s.summary({data:{overall:{matches:85,wickets:99,bowling_average:22.1,economy:6.8}}},'bowling'),{m:85,wk:99,ba:22.1,eco:6.8});
+a.equal(s.summary({data:{error:'no career data'}},'bowling'),null);
+console.log('PASS real ESPN identity matching and independent career stat parsing');
