@@ -59,7 +59,8 @@ function summary(json,kind){
   const bowl=['bowlingaverage','bowlavg','economy','economyrate','wickets'];
   const keys=kind==='batting'?bat:bowl;
   const count=keys.filter(x=>low[x]!=null).length;
-  if(count>=2)list.push({o:low,rank:count+(/^(overall|career|total|summary)$/i.test(key)?10:0)});
+  // Do not treat a split by opponent/ground/year as the career total.
+  if(count>=2&&/^(overall|career|total|totals|summary)$/i.test(key))list.push({o:low,rank:count+10});
   for(const [k,v] of Object.entries(o))if(k!=='raw'&&k!=='html'&&k!=='headers')visit(v,depth+1,k);
  }
  visit(json);list.sort((a,b)=>b.rank-a.rank);
@@ -115,7 +116,7 @@ async function main(){
   ids.set(p.id,String(p.cricinfo.id));
  }
  const key=(process.env.APISH_KEY||'').trim();
- let calls=0,updated=0,failed=0;
+ let calls=0,updated=0,failed=0,consecutiveFailures=0;
  if(key&&!process.argv.includes('--identities')){
   const limit=Math.min(100,Math.max(0,Number(process.env.CRICINFO_MAX_CALLS||20)));
   const queue=players.filter(p=>p.cricinfo?.id).filter(p=>!p.cricinfo.formats?.[formatOf(p)]?.asOf)
@@ -127,7 +128,13 @@ async function main(){
     calls++;try{Object.assign(row,await pullStats(p.cricinfo.id,format,kind,key));worked++;}
     catch(e){failed++;console.error(p.id+' '+kind+': '+e.message);}
    }
-   if(worked&&[row.avg,row.sr,row.ba,row.eco].some(x=>x!=null)){p.cricinfo.formats[format]={...row,asOf:today()};updated++;}
+   if(worked&&[row.avg,row.sr,row.ba,row.eco].some(x=>x!=null)){
+    p.cricinfo.formats[format]={...row,asOf:today()};updated++;consecutiveFailures=0;
+   }else{
+    consecutiveFailures++;
+    // Stop spending credits if the API response shape has changed.
+    if(consecutiveFailures>=3){console.error('Three unsupported or empty API responses: stopping for this run.');break;}
+   }
   }
  }
  write(players,ids);
