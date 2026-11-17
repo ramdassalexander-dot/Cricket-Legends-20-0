@@ -1,5 +1,5 @@
 'use strict';
-/* V22: marginal-value draft ranking, completely independent of the player's role label.
+/* V23: marginal-value draft ranking, completely independent of the player's role label.
  * The fifth strong bowler is valuable; a redundant sixth merely competes
  * with the current weakest member of the best five. No automatic AR bonus.
  * Unverified players cannot acquire elite value simply from their role.
@@ -17,7 +17,7 @@ const CricketDraftFitV22=(()=>{
   const bowlingGain=replacesBowler?clamp((a.bowl.overall-fifthBowler)*.66,0,25):0;
   const enoughBatters=existing.filter(x=>x.bat.overall>=69).length>=6;
   const availableOpeners=existing.filter(x=>x.bat.powerplay>=77).length;
-  let points=24+quality(a)*.54+bowlingGain;
+  let points=22+quality(a)*.56+bowlingGain+(a.record.verified?2:0);
   let reason='Batting contribution to your XI';
   if(replacesBowler)reason=bowls.length<5?'Adds an effective frontline bowling option':'Improves the existing top-five bowling attack';
   if(!enoughBatters&&a.bat.overall>=77){points+=4;reason='Adds a proven top-six batting option';}
