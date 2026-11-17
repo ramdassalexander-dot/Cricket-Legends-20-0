@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - ".github/workflows/cricinfo-sync.yml"
+      - "cricinfo-connect.js"
+      - "test-cricinfo-connect.js"
+      - "package.json"
   workflow_dispatch:
   schedule:
     - cron: "17 5 * * *"
