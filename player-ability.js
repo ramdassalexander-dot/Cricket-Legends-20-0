@@ -101,15 +101,26 @@ const CricketAbilityV15=(()=>{
  function profile(p){
   const role=patterns[p?.role]?p.role:'B',base=patterns[role],style=curated[p?.id]||{};
   // Explicit, reviewed player IDs and career summaries only. No guessed ESPN stats.
-  const imported=p?.cricinfo?.formats||null;
-  const chosen=imported&&['T20I','T20','ODI','Test'].find(fmt=>{
-   const x=imported[fmt];return x&&(finite(x.avg)||finite(x.sr)||finite(x.ba)||finite(x.eco));
-  });
-  const sourced=chosen?{...imported[chosen],fmt:chosen,source:'https://stats.espncricinfo.com/ci/engine/player/'+p.cricinfo.id+'.html?class='+({Test:1,ODI:2,T20I:3,T20:6}[chosen])+';type=allround',provider:'ESPNcricinfo Statsguru',asOf:imported[chosen].asOf||null}:null;
-  const verified=sourced||auditedT20I[p?.id]||null;
-  const record=verified?{...p,...verified}:p;
-  const fmt=fmtNorm(record?.fmt),hasBat=finite(record?.avg),hasSR=finite(record?.sr),hasBowl=finite(record?.ba),hasEco=finite(record?.eco);
-  const confidence=sourced?'imported ESPNcricinfo '+chosen+' career figures · phase ratings estimated':verified?'historical T20I snapshot · phase ratings estimated':(hasBat||hasSR||hasBowl||hasEco)?'record-based fantasy estimate':'no recorded performance data · conservative fantasy estimate';
+  const imported=p?.cricinfo?.formats||null,order=['T20I','T20','ODI','Test'];
+  const sourceFormat=key=>imported&&order.find(fmt=>finite(imported[fmt]?.[key]))||null;
+  // Each skill field chooses its own best available format. A T20I bowling
+  // record must not erase a proven ODI/Test batting career (or vice versa).
+  const avgFmt=sourceFormat('avg'),srFmt=sourceFormat('sr'),
+        baFmt=sourceFormat('ba'),ecoFmt=sourceFormat('eco');
+  const audited=auditedT20I[p?.id]||null,baseline=audited?{...p,...audited}:p;
+  const chosen=avgFmt||srFmt||baFmt||ecoFmt;
+  const sourceUrl=fmt=>'https://stats.espncricinfo.com/ci/engine/player/'+p.cricinfo.id+'.html?class='+({Test:1,ODI:2,T20I:3,T20:6}[fmt])+';type=allround';
+  const sourced=chosen?{fmt:chosen,source:sourceUrl(chosen),provider:'ESPNcricinfo Statsguru',asOf:imported[chosen]?.asOf||null}:null;
+  const verified=sourced||audited||null;
+  const record={...baseline,avg:avgFmt?imported[avgFmt].avg:baseline?.avg,
+   sr:srFmt?imported[srFmt].sr:baseline?.sr,
+   ba:baFmt?imported[baFmt].ba:baseline?.ba,
+   eco:ecoFmt?imported[ecoFmt].eco:baseline?.eco,
+   m:chosen?imported[chosen]?.m:baseline?.m};
+  const fmt=fmtNorm(avgFmt||srFmt||(audited&&finite(audited.avg)?audited.fmt:baseline?.fmt));
+  const bowlFmt=fmtNorm(baFmt||ecoFmt||(audited&&(finite(audited.ba)||finite(audited.eco))?audited.fmt:p?.fmt));
+  const hasBat=finite(record?.avg),hasSR=finite(record?.sr),hasBowl=finite(record?.ba),hasEco=finite(record?.eco);
+  const confidence=sourced?'reviewed ESPNcricinfo records · independently format-normalized batting and bowling; fantasy phase estimates':verified?'historical T20I snapshot · phase ratings estimated':(hasBat||hasSR||hasBowl||hasEco)?'record-based fantasy estimate':'no recorded performance data · conservative fantasy estimate';
   // Convert DIFFERENT format averages into distinct 0–100 prior scales; Test 50 != T20 50.
   const avgScore=hasBat?clamp(fmt==='Test'?25+record.avg*1.08:(fmt==='T20I'||fmt==='T20')?34+record.avg*1.20:fmt==='ODI'?29+record.avg*1.16:25+record.avg*1.07,38,98):null;
   const srScore=hasSR?clamp((fmt==='T20I'||fmt==='T20')?37+(record.sr-100)*.75:fmt==='ODI'?42+(record.sr-70)*.60:43+(record.sr-95)*.60,35,98):null;
@@ -131,13 +142,14 @@ const CricketAbilityV15=(()=>{
    vsPace:round(batOverall+(style.pace||0)),
    vsSpin:round(batOverall+(style.spin||0))
   };
-  const bowlAvgScore=hasBowl?clamp((fmt==='T20I'||fmt==='T20')?123-record.ba*2.05:fmt==='Test'?127-record.ba*1.95:fmt==='ODI'?126-record.ba*2.02:123-record.ba*1.85,38,98):null;
+  const bowlAvgScore=hasBowl?clamp((bowlFmt==='T20I'||bowlFmt==='T20')?123-record.ba*2.05:bowlFmt==='Test'?127-record.ba*1.95:bowlFmt==='ODI'?126-record.ba*2.02:123-record.ba*1.85,38,98):null;
   // Format-aware bowling economy contributes independently where verified.
-  const economyScore=hasEco?clamp(112-(record.eco-5)*13.5,38,98):null;
+  const economyFormat=fmtNorm(ecoFmt||bowlFmt);
+   const economyScore=hasEco?clamp(economyFormat==='ODI'?82-(record.eco-4.5)*14:economyFormat==='Test'?78-(record.eco-2.8)*20:112-(record.eco-5)*13.5,38,98):null;
   let bowlOverall=bowlAvgScore!=null?72*.12+bowlAvgScore*.88:base.bowl;
   if(economyScore!=null)bowlOverall=bowlOverall*.72+economyScore*.28;
   if(['O','B','W'].includes(role)&&!hasBowl&&!hasEco)bowlOverall=25;
-  const kind=verified?.kind||(role==='S'||style.spinBowler?'spin':role==='P'||style.paceBowler?'pace':role==='A'?'medium':'part-time');
+  const kind=audited?.kind||(role==='S'||style.spinBowler?'spin':role==='P'||style.paceBowler?'pace':role==='A'?'medium':'part-time');
   const bowl={
    overall:round(bowlOverall),
    powerplay:round(bowlOverall+(kind==='pace'?7:kind==='spin'?-3:-2)+(style.powerplayBowl||0)),
@@ -156,7 +168,7 @@ const CricketAbilityV15=(()=>{
   if(bowl.death>=83)specialities.push('DEATH OVERS');
   if(bowl.control>=83)specialities.push('ECONOMY');
   return {id:p.id,role,fmt,confidence,bat,bowl,specialities,kind,
-   record:{format:fmt,average:hasBat?record.avg:null,strikeRate:hasSR?record.sr:null,bowlingAverage:hasBowl?record.ba:null,economy:hasEco?record.eco:null,source:verified?.source||p.source||null,verified:!!verified,provider:sourced?'ESPNcricinfo Statsguru':verified?'Cross-checked T20I snapshot':'Career record / fantasy fallback',asOf:sourced?.asOf||p.asOf||null,span:verified?.span||null}};
+   record:{format:fmt,battingFormat:fmt,bowlingFormat:bowlFmt,metricFormats:{average:avgFmt||fmt,strikeRate:srFmt||fmt,bowlingAverage:baFmt||bowlFmt,economy:ecoFmt||bowlFmt},average:hasBat?record.avg:null,strikeRate:hasSR?record.sr:null,bowlingAverage:hasBowl?record.ba:null,economy:hasEco?record.eco:null,source:sourced?.source||audited?.source||p.source||null,verified:!!verified,provider:sourced?'ESPNcricinfo Statsguru':audited?'Cross-checked T20I snapshot':'Career record / fantasy fallback',asOf:sourced?.asOf||p.asOf||null,span:audited?.span||null}};
  }
  function selectBowlers(xs){
   // Best six willing bowling options; five are sufficient, but a genuine sixth adds flexibility.
