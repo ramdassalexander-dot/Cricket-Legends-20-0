@@ -20,6 +20,15 @@ assert.equal(probed.record.asOf,'2026-11-17');
 assert.match(probed.record.source,/engine\/player\/253802\.html/);
 assert.equal(probed.record.verified,true);
 assert.ok(probed.bat.overall>ability.profile(p('india-roger-binny')).bat.overall+20);
+const mixed={...p('shakib-al-hasan'),cricinfo:{id:'56143',formats:{
+ T20I:{m:129,ba:20.91,eco:6.81,asOf:'2026-11-17'},
+ ODI:{m:247,avg:37.3,sr:82.4,asOf:'2026-11-17'}
+}}};
+const mixedProfile=ability.profile(mixed);
+assert.equal(mixedProfile.record.metricFormats.average,'ODI');
+assert.equal(mixedProfile.record.metricFormats.bowlingAverage,'T20I');
+assert.ok(mixedProfile.bat.overall>=60,'An ODI batting record must survive a T20I bowling import');
+assert.ok(mixedProfile.bowl.overall>=75,'A T20I bowling record must survive an ODI batting import');
 assert.throws(()=>normalize([{...row,espnId:111111}],players),/ID mismatch/);
 assert.throws(()=>normalize([{...row,avg:9999}],players),/Invalid numeric/);
 const stat={id:'fictional',fmt:'T20I',avg:39,sr:148,ba:22,eco:7.2,wk:65,m:80};
