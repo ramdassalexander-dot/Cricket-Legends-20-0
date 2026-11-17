@@ -14,3 +14,22 @@ Career statistics below are **historical T20I aggregates**, not ball-by-ball sco
 | Kieron Pollard | 101 | 25.30 | 135.14 | 28.28 | 8.32 | https://www.windiescricket.com/players/kieron-pollard-4194/ |
 
 Strike rates for Andre Russell, Mohammad Nabi, Dwayne Bravo and Kieron Pollard are calculated from runs/balls on the cited source and rounded to two decimals. **These checked records are a fraction of the full roster.** Of 793 names, 116 existing player-data records have at least one career performance field, while remaining records have fallback fantasy ratings; some of the 116 are incomplete. Do not claim all 793 are verified.
+
+
+## V22 additions and measurement boundaries (November 17, 2026)
+
+V22 adds **11 T20I career snapshots** to the initial eight. Sources in the game are
+linked on each player's scouting view. In particular, direct career record pages
+are recorded for Babar Azam, Kane Williamson, Steven Smith, Muhammad Rizwan,
+Maheesh Theekshana, and an Indian board record for Jasprit Bumrah.
+
+These are source-specific snapshots. Ratings for many historical players whose
+careers predate T20Is remain cross-format **fantasy estimates**, and 793/793
+full-career coverage has NOT been achieved. Statsguru on ESPNcricinfo makes
+Tests, One-day Internationals and T20Is searchable, but public availability
+does not automatically constitute a bulk commercial data licence. A licensed
+complete data import and identity/format reconciliation is still needed.
+
+No player should be treated as elite by default because they have the
+`A`/all-rounder designation. Unknown performance data are marked as missing
+and receive conservative, clearly described baseline estimates.

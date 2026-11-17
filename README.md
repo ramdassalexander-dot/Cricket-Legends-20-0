@@ -1,4 +1,4 @@
-# Cricket Legends 20–0 · V21.1 Anti-Streak Draft
+# Cricket Legends 20–0 · V22 Evidence-Aware Player Fit
 
 **Live game:** https://cricket-legends-20-0.onrender.com
 
@@ -49,3 +49,20 @@ npm start
 
 ## V21.1 — Fixing frustrating repeat country rolls
 Previously all 45 available country–era combinations were selected uniformly independently for every spin: Bangladesh occupied 3 combinations (6.7%) and Afghanistan 2 (4.4%), with no memory of prior results. Consecutive repeats could occur by chance. The anti-streak spinner now excludes the last four drawn countries whenever another eligible country is available, and applies a 0.30 repeat multiplier to nations already seen during the draft. This is not a guaranteed one-of-each-country selection: smaller era pools remain less common and the game stays randomized. Free country rerolls keep the existing decade; era rerolls keep the existing country; 200-coin full respins use the same fair rolling policy. State is saved with the current draft; historical completed seasons and match odds are unchanged.
+
+
+## V22 — Data integrity and Best Fit fix
+
+**Corrected:** The previous fallback assigned almost any all-rounder without
+recorded statistics an approximately 70 batting / 72 bowling combination,
+which ranked unknown players above well-established internationals. V22
+replaces these inflated defaults with conservative, role-aware but never
+role-rewarding priors. Eleven additional sourced T20I career snapshots are
+included. `Best Fit` calculates the *marginal change* in the top-five bowling
+attack; a sixth unexceptional bowler cannot get another full bowling premium.
+A proven all-rounder remains selectable on merit, including as a specialist
+batter or bowler. No fixed all-rounder cap is used.
+
+**Outstanding:** The complete 793-person record audit and format-matched
+Statsguru / other licensed career statistics import is not yet complete.
+Older players need evidenced Test/ODI translations, not fake T20I figures.

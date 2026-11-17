@@ -1,22 +1,16 @@
-'use strict';
-/* Cricket Legends V15 — transparent FANTASY T20 ability model.
- * Sources: player-data.json historical career snapshots (not complete T20 data).
- * All ratings without phase-by-phase records are estimated game design, not official statistics.
- * This exact module is embedded into standalone HTML and required by the server.
- */
 const CricketAbilityV15=(()=>{
- const VERSION='all-time-legends-v21-dual-quality';
+ const VERSION='all-time-legends-v22-marginal-fit';
  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
  const round=n=>Math.round(clamp(n,25,99));
  const terrain=['balanced','seam','turn','flat','seam','balanced','flat','turn','balanced','turn'];
  const context=ix=>{const n=((Number(ix)||0)%20+20)%20;return {fixture:n,surface:terrain[(n+(n>=10?3:0))%terrain.length]};};
  const patterns={
-  O:{bat:70,bowl:27,aggression:69,survival:63,powerplay:8,middle:0,death:-4},
-  B:{bat:70,bowl:28,aggression:60,survival:72,powerplay:0,middle:5,death:0},
-  W:{bat:68,bowl:23,aggression:65,survival:67,powerplay:2,middle:2,death:4},
-  A:{bat:70,bowl:72,aggression:65,survival:67,powerplay:0,middle:3,death:6},
-  P:{bat:37,bowl:72,aggression:48,survival:40,powerplay:-8,middle:-4,death:-4},
-  S:{bat:39,bowl:72,aggression:48,survival:42,powerplay:-7,middle:-4,death:-3}
+  O:{bat:64,bowl:27,aggression:69,survival:63,powerplay:8,middle:0,death:-4},
+  B:{bat:64,bowl:28,aggression:60,survival:72,powerplay:0,middle:5,death:0},
+  W:{bat:63,bowl:23,aggression:65,survival:67,powerplay:2,middle:2,death:4},
+  A:{bat:55,bowl:54,aggression:65,survival:67,powerplay:0,middle:3,death:6},
+  P:{bat:36,bowl:64,aggression:48,survival:40,powerplay:-8,middle:-4,death:-4},
+  S:{bat:37,bowl:64,aggression:48,survival:42,powerplay:-7,middle:-4,death:-3}
  };
  // Small, human-curated fantasy playing-style labels. Not asserted to be verified phase statistics.
  // An unlisted player receives a consistent, role-and-record-based neutral profile.
@@ -88,7 +82,19 @@ const CricketAbilityV15=(()=>{
   'andre-russell':{fmt:'T20I',m:86,avg:22.00,sr:163.80,ba:31.45,eco:9.42,kind:'pace',source:'https://www.windiescricket.com/players/andre-russell-4400/',span:'2011–2025',position:'lower'},
   'mohammad-nabi':{fmt:'T20I',m:155,avg:22.20,sr:136.00,ba:28.18,eco:7.43,kind:'spin',source:'https://www.windiescricket.com/players/mohammad-nabi-3936/',span:'2010–2026',position:'middle'},
   'dwayne-bravo':{fmt:'T20I',m:91,avg:22.01,sr:115.03,ba:26.10,eco:8.11,kind:'pace',source:'https://www.windiescricket.com/players/dwayne-bravo-2172/',span:'2006–2021',position:'lower'},
-  'kieron-pollard':{fmt:'T20I',m:101,avg:25.30,sr:135.14,ba:28.28,eco:8.32,kind:'medium',source:'https://www.windiescricket.com/players/kieron-pollard-4194/',span:'2008–2022',position:'lower'}
+  'kieron-pollard':{fmt:'T20I',m:101,avg:25.30,sr:135.14,ba:28.28,eco:8.32,kind:'medium',source:'https://www.windiescricket.com/players/kieron-pollard-4194/',span:'2008–2022',position:'lower'},
+  'travis-head':{fmt:'T20I',m:53,avg:28.40,sr:156.69,kind:'part-time',source:'https://www.icc-cricket.com/rankings/62023/travis-head',span:'2016–2026',position:'top'},
+  'babar-azam':{fmt:'T20I',m:145,avg:38.94,sr:128.06,kind:'part-time',source:'https://www.windiescricket.com/players/babar-azam-2732/',span:'2016–2026',position:'top'},
+  'kane-williamson':{fmt:'T20I',m:93,avg:33.44,sr:123.09,kind:'part-time',source:'https://www.windiescricket.com/players/kane-williamson-4865/',span:'2011–2024',position:'top'},
+  'steve-smith':{fmt:'T20I',m:67,avg:24.86,sr:125.46,kind:'part-time',source:'https://www.windiescricket.com/players/steven-smith-4486/',span:'2010–2024',position:'top'},
+  'mohammad-rizwan':{fmt:'T20I',m:106,avg:47.42,sr:125.38,kind:'part-time',source:'https://www.windiescricket.com/players/muhammad-rizwan-21709/',span:'2015–2024',position:'top'},
+  'suryakumar-yadav':{fmt:'T20I',m:113,avg:36.36,sr:162.95,kind:'part-time',source:'https://scores-bcci.epicon.in/international/men/players/suryakumar-yadav/174',span:'2021–2026',position:'middle'},
+  'jasprit-bumrah':{fmt:'T20I',m:95,avg:2.40,sr:66.67,ba:18.08,eco:6.52,kind:'pace',source:'https://bccitv-widget.epicon.in/players/9/jasprit-bumrah?platform=international&type=men',span:'2016–2026',position:'lower'},
+  'hardik-pandya':{fmt:'T20I',m:138,avg:28.25,sr:145.92,ba:27.13,eco:8.34,kind:'pace',source:'https://scores-bcci.epicon.in/international/men/players/hardik-pandya/54',span:'2016–2026',position:'middle'},
+  'glenn-maxwell':{fmt:'T20I',m:130,avg:28.97,sr:154.42,ba:29.71,eco:8.14,kind:'spin',source:'https://cricketfieldguide.com/player/gj-maxwell-01m4y5z36dfvp8gqnrcrgrw0gz/career',span:'2012–2026',position:'middle'},
+  'adil-rashid':{fmt:'T20I',m:153,ba:23.43,eco:7.56,kind:'spin',source:'https://www.icc-cricket.com/rankings/4661/adil-rashid',span:'2009–2026',position:'lower'},
+  'maheesh-theekshana':{fmt:'T20I',m:89,ba:27.70,eco:7.22,kind:'spin',source:'https://www.windiescricket.com/players/maheesh-theekshana-20732/',span:'2021–2026',position:'lower'},
+  'yuzvendra-chahal':{fmt:'T20I',m:80,ba:25.09,eco:8.19,kind:'spin',source:'https://www.icc-cricket.com/rankings/9844/yuzvendra-chahal',span:'2016–2023',position:'lower'}
  };
  const finite=n=>typeof n==='number'&&Number.isFinite(n);
  const fmtNorm=(fmt)=>['Test','ODI','T20I'].includes(fmt)?fmt:'Career';
@@ -97,7 +103,7 @@ const CricketAbilityV15=(()=>{
   const verified=auditedT20I[p?.id]||null;
   const record=verified?{...p,...verified}:p;
   const fmt=fmtNorm(record?.fmt),hasBat=finite(record?.avg),hasSR=finite(record?.sr),hasBowl=finite(record?.ba),hasEco=finite(record?.eco);
-  const confidence=verified?'verified historical T20I figures · phase ratings estimated':(hasBat||hasSR||hasBowl)?'record-based fantasy estimate':'incomplete stats · fantasy baseline';
+  const confidence=verified?'verified historical T20I figures · phase ratings estimated':(hasBat||hasSR||hasBowl||hasEco)?'record-based fantasy estimate':'no recorded performance data · conservative fantasy estimate';
   // Convert DIFFERENT format averages into distinct 0–100 prior scales; Test 50 != T20 50.
   const avgScore=hasBat?clamp(fmt==='Test'?25+record.avg*1.08:fmt==='T20I'?34+record.avg*1.20:fmt==='ODI'?29+record.avg*1.16:25+record.avg*1.07,38,98):null;
   const srScore=hasSR?clamp(fmt==='T20I'?37+(record.sr-100)*.75:fmt==='ODI'?42+(record.sr-70)*.60:43+(record.sr-95)*.60,35,98):null;
