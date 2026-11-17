@@ -37,3 +37,9 @@ and receive conservative, clearly described baseline estimates.
 ## V23 — ESPNcricinfo is a reference, not an invented source
 
 The player cards keep the actual RECORD SOURCE beside the ESPN STATS or FIND ON ESPN reference link. Only rows imported from independently reviewed Statsguru figures through `cricinfo-import.js` are labelled as ESPNcricinfo data. ESPN IDs 253802, 625383 and 56143 have been identity-matched to Kohli, Bumrah and Shakib respectively; all other lookup links are search pages. No live API or complete licensed dataset is connected. Historical career data remains format-labelled and fantasy phase ratings remain estimates.
+
+## Automatic ESPN identity registry (17 Nov 2026)
+
+Cricsheet's People Register and aliases are linked by exact normalized names and conservative unique first-initial/surname matching; duplicate or ambiguous player IDs are rejected. Dataset licence: Open Data Commons Attribution 1.0 (ODC-BY). Attribution: [Cricsheet Register](https://cricsheet.org/register/). These registry rows establish *identity only*, not stats.
+
+When APISH_KEY is configured, an automated daily job obtains career-summary records using [API.SH ESPNcricinfo player stats](https://api.sh/docs/espncricinfo-player-stats). Only valid returned stats enter the game; API.SH is an independent third-party service and may require payment/rights. Neither identity links nor source links alone are evidence that any figures were imported.
